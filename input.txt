@@ -1,0 +1,11 @@
+#012345
+name:Binh
+toan:9
+ly:9
+hoa:7
+#012346
+name:Duc
+toan:9
+ly:9
+hoa:7
+dc:Quang Tri
