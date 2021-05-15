@@ -11,21 +11,23 @@ import java.util.List;
 import java.util.Scanner;
 /**
  * Viet chuong trinh doc file input.txt co cau truc
- * #msv
+ * #msv (dau hieu nhan biet 1 sv moi)
  * name:Duc
  * toan:9
  * ly:9
  * hoa:7
  * dc:Quang Tri (co the co hoac khong)
  * Luu danh sach duoi dang List<Person>
- * Doi tuong Student: msv | name | toan | ly | hoa | dc
+ * Doi tuong Student: #msv | name | toan | ly | hoa | dc
  * 1. In ra danh sach vua doc thong qua iterator
  * 2. Tim ra sinh vien co diem trung binh cao nhat
  * @author TranThanhBinh
  *
  */
 public class MainApp {
-	static void readFile(String fileName) throws IOException {
+	
+	static List<Student> readFromFile(String fileName) throws IOException {
+		List<Student> stdList = new ArrayList<>();
 		// Open the file
 		FileInputStream fstream = new FileInputStream(fileName);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -35,51 +37,44 @@ public class MainApp {
 		//Read File Line By Line
 		while ((strLine = br.readLine()) != null)   {
 		  // Print the content on the console
-		  System.out.println (strLine);
+		  if(strLine.indexOf('#') == 0) {
+			  String msv = strLine.substring(1, strLine.length() - 1);
+			  
+			  String name = br.readLine();
+			  double toan = Double.parseDouble(br.readLine());
+			  double ly = Double.parseDouble(br.readLine());
+			  double hoa = Double.parseDouble(br.readLine());
+			  String dc = br.readLine();
+			  
+			  Student std = new Student(msv, name, toan, ly, hoa, dc);
+			  stdList.add(std);
+		  }
 		}
 
 		//Close the input stream
 		fstream.close();
+		
+		return stdList;
 	}
 	
-	static void doList() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Nhap vao danh sach sinh vien");
-		List<Person> personList = new ArrayList<Person>();
-		
-		Person p1 = new Person("Nam 1", 8);
-		personList.add(p1);
-		
-		Person p2 = new Person("Nam 2", 8);
-		personList.add(p2);
-		
-		Person p3 = new Person("Nam 3", 8);
-		personList.add(p3);
-		
-		for(int i=0; i < personList.size(); i++) {
-			Person p = personList.get(i);
-			System.out.println(String.format("name: %s - mark: %.2f", p.getName(), p.getMark()));			
-
-		}
-		
-		for (Person p : personList) {		
-			System.out.println(String.format("name: %s - mark: %.2f", p.getName(), p.getMark()));			
-		}
-		
-		Iterator<Person> iterator = personList.iterator();
-		while(iterator.hasNext()) {
-			Person p = iterator.next();			
-			System.out.println(String.format("name: %s - mark: %.2f", p.getName(), p.getMark()));			
+	static void print(List<Student> list) {
+		for (Student student : list) {
+			String str = String.format("Name: %s - DTB: %.1f", student.getName(), student.dtb());
+			System.out.println(str);
 		}
 	}
+	
 	public static void main(String[] args) {
-		//Nhap vao danh sach sinh vien
 		try {
-			readFile("input.txt");
+			//Read from file
+			List<Student> stdList = readFromFile("input.txt");
+			
+			//Print list student
+			print(stdList);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}			
-		
+		}
 	}
 }
